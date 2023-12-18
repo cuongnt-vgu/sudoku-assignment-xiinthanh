@@ -24,7 +24,7 @@ int main(int argc, char **argv)
     int solved_counter = board->solved_counter;
     while (board->solved_counter < BOARD_SIZE * BOARD_SIZE)
     {
-        printf("????\n");
+        // printf("????\n");
         solved_counter = check_solved_cells(board, &p_solved_cells);
         // printf("check_solved_cells %d\n", solved_counter);
         if (show_possible(board, p_solved_cells, solved_counter)) 
@@ -51,7 +51,7 @@ int main(int argc, char **argv)
              printf("naked_triples %d\n", solved_counter);
              continue;
         }
-        
+
         break;
     }
     print_solution(board);
