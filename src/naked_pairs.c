@@ -1,4 +1,5 @@
 #include "naked_pairs.h"
+#include "naked_triples.h"
 
 bool is_naked_pairs(Cell *p_fixed_cell, Cell *p_check_cell) {
     if (p_check_cell->num_candidates != 2) return false;  // Pair of 2
@@ -90,6 +91,7 @@ int naked_pairs(SudokuBoard *p_board) {
 
         free(pairs[i].values);
     }
+    // printf("THIS IS NAKED PAIRS\n");
 
     // printf("###############\n");
     // for (int i = 0; i < BOARD_SIZE; i++) {
@@ -103,6 +105,10 @@ int naked_pairs(SudokuBoard *p_board) {
     //     }
     // }
     // printf("###############\n");
+    if (!eliminate_count || !counter) {
+        return naked_triples(p_board);
+    }
+
     if (!eliminate_count) return 0;
     return counter;
 }

@@ -45,7 +45,7 @@ void eliminate_candidates_triples(Cell **p_cells, Triple triple, int *eliminate_
         for (int value_id = 0; value_id < 3; value_id++) {
             if (is_candidate(p_cells[i], triple.values[value_id])) {
                 unset_candidate(p_cells[i], triple.values[value_id]);
-                printf("%d %d %d\n", p_cells[i]->row_index, p_cells[i]->col_index, triple.values[value_id]);
+                // printf("%d %d %d\n", p_cells[i]->row_index, p_cells[i]->col_index, triple.values[value_id]);
                 (*eliminate_count) += 1;
             }
         }
@@ -112,12 +112,13 @@ int naked_triples(SudokuBoard *p_board)
         if (triples[i].p_cells[1]->box_index == box_index && triples[i].p_cells[2]->box_index == box_index) {  // row
             eliminate_candidates_triples(p_board->p_boxes[box_index], triples[i], &eliminate_count);
         }
-        printf("%d %d, %d %d, %d %d ", triples[i].p_cells[0]->row_index, triples[i].p_cells[0]->col_index,
-                                        triples[i].p_cells[1]->row_index, triples[i].p_cells[1]->col_index,
-                                        triples[i].p_cells[2]->row_index, triples[i].p_cells[2]->col_index);
-        printf("- %d %d %d\n", triples[i].values[0], triples[i].values[1], triples[i].values[2]);
+        // printf("%d %d, %d %d, %d %d ", triples[i].p_cells[0]->row_index, triples[i].p_cells[0]->col_index,
+        //                                 triples[i].p_cells[1]->row_index, triples[i].p_cells[1]->col_index,
+        //                                 triples[i].p_cells[2]->row_index, triples[i].p_cells[2]->col_index);
+        // printf("- %d %d %d\n", triples[i].values[0], triples[i].values[1], triples[i].values[2]);
     }
-    printf("|||%d|||\n", eliminate_count);
+    // printf("|||%d|||\n", eliminate_count);
+    // printf("THIS IS NAKED TRIPLE\n");
     if (!eliminate_count) return 0;
     return counter;
 }
