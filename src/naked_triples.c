@@ -82,7 +82,7 @@ int naked_triples(SudokuBoard *p_board)
     // printf("###############\n");
 
 
-    int counter;
+    int counter = 0;
     Triple triples[2300];  // <= C(3, 9) * 3 * 9 = 2268 (9rows + 9cols + 9boxes)
     for (int x = 1; x <= BOARD_SIZE - 2; x++) {
         for (int y = x + 1; y <= BOARD_SIZE - 1; y++) {
