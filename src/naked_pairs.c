@@ -104,6 +104,8 @@ int naked_pairs(SudokuBoard *p_board) {
     // }
     // printf("###############\n");
 
+    // printf("%d %d\n", counter, eliminate_count);
+
     // if (!eliminate_count) return 0;
     return counter;
 }

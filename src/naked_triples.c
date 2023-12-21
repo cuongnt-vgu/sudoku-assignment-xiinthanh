@@ -123,5 +123,6 @@ int naked_triples(SudokuBoard *p_board)
     // printf("|||%d|||\n", eliminate_count);
     // printf("THIS IS NAKED TRIPLE\n");
     // if (!eliminate_count) return 0;
+    // printf("%d %d\n", counter, eliminate_count);
     return counter;
 }
