@@ -1,7 +1,6 @@
 #pragma once
 
 #include "sudoku.h"
-#include <stdio.h>
 
 typedef struct HiddenPair_impl {
     Cell *p_cells[2];
@@ -16,6 +15,6 @@ bool is_in_pairs_list(HiddenPair *p_array, int size, Cell *p_a, Cell *p_b, int x
 void add_hidden_pair(Cell *p_a, Cell *p_b, int x, int y, HiddenPair *pairs, int *counter);
 void run_pair_values(Cell **p_cells, int x, int y, HiddenPair *pairs, int *counter);
 
-void eliminate_candidates_hidden_pairs(HiddenPair pair, int *eliminate_count);
+void eliminate_candidates_hidden_pairs(HiddenPair pair);
 
 int hidden_pairs(SudokuBoard *p_board);

@@ -52,7 +52,7 @@ void run_pair_values(Cell **p_cells, int x, int y, HiddenPair *pairs, int *count
         for (int j = i + 1; j < BOARD_SIZE; j++) if (check_value_hidden(p_cells[j], x, y)) {
             // (i, j) will be a Pair Cells.
 
-            if (p_cells[i]->num_candidates == 2 && p_cells[j]->num_candidates == 2) continue;
+            if (p_cells[i]->num_candidates == 2 && p_cells[j]->num_candidates == 2) continue;  // no candidate to eliminate
 
             add_hidden_pair(p_cells[i], p_cells[j], x, y, pairs, counter);
         }
@@ -60,16 +60,15 @@ void run_pair_values(Cell **p_cells, int x, int y, HiddenPair *pairs, int *count
 }
 
 
-void eliminate_candidates_hidden_pairs(HiddenPair pair, int *eliminate_count) {
+void eliminate_candidates_hidden_pairs(HiddenPair pair) {
     for (int value = 1; value <= BOARD_SIZE; value++) {
         if (value == pair.values[0] || value == pair.values[1]) continue;
+
         if (is_candidate(pair.p_cells[0], value)) {
             unset_candidate(pair.p_cells[0], value);
-            (*eliminate_count) += 1;
         }
         if (is_candidate(pair.p_cells[1], value)) {
             unset_candidate(pair.p_cells[1], value);
-            (*eliminate_count) += 1;
         }
     }
 }
@@ -78,11 +77,11 @@ void eliminate_candidates_hidden_pairs(HiddenPair pair, int *eliminate_count) {
 int hidden_pairs(SudokuBoard *p_board)
 {
     int counter = 0;
-    HiddenPair pairs[1000];  // max size: C(2, 9) * 9 * 3 = 972
+    HiddenPair pairs[34992 + 12];  // max size: 3 * 9 * C(2, 9) * C(2, 9) = 3 * 9 * (9*8/2) * (9*8/2) = 34992
     for (int x = 1; x <= BOARD_SIZE - 1; x++) {
         for (int y = x + 1; y <= BOARD_SIZE; y++) {
+            // (x, y) will be a Pair Values
             for (int id = 0; id < BOARD_SIZE; id++) {
-                // (x, y) will be a Pair Values
                 run_pair_values(p_board->p_rows[id], x, y, pairs, &counter);
                 run_pair_values(p_board->p_cols[id], x, y, pairs, &counter);
                 run_pair_values(p_board->p_boxes[id], x, y, pairs, &counter);
@@ -90,16 +89,9 @@ int hidden_pairs(SudokuBoard *p_board)
         }
     }
 
-    int eliminate_count = 0;
     for (int i = 0; i < counter; i++) {
-        eliminate_candidates_hidden_pairs(pairs[i], &eliminate_count);
-        // printf("%d %d, %d %d, ", pairs[i].p_cells[0]->row_index, pairs[i].p_cells[0]->col_index,
-        //                                 pairs[i].p_cells[1]->row_index, pairs[i].p_cells[1]->col_index);
-        // printf("- %d %d\n", pairs[i].values[0], pairs[i].values[1]);
+        eliminate_candidates_hidden_pairs(pairs[i]);
     }
-    // printf("|||%d|||\n", eliminate_count);
-    // printf("THIS IS NAKED TRIPLE\n");
-    if (!eliminate_count) return 0;
-    
+
     return counter;
 }
