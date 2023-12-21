@@ -3,13 +3,13 @@
 #include "sudoku.h"
 #include <stdlib.h>
 
-typedef struct TripleCells {
+typedef struct NakedTriple_impl {
     Cell *p_cells[3];
     int values[3];
 } Triple;
 
 bool check_value_triple(Cell *p_cell, int x, int y, int z);
-bool is_in_triples_list(Triple *p_array, int size, Cell *p_a, Cell *p_b, Cell *p_c);
+bool is_in_triples_list(Triple *p_array, int size, Cell *p_a, Cell *p_b, Cell *p_c, int x, int y, int z);
 void form_naked_triple(Cell *p_a, Cell *p_b, Cell *p_c, int x, int y, int z, Triple *triples, int *counter);
 void eliminate_candidates_triples(Cell **p_cells, Triple triple, int *eliminate_count);
 
