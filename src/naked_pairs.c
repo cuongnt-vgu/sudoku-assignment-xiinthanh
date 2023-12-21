@@ -105,9 +105,6 @@ int naked_pairs(SudokuBoard *p_board) {
     //     }
     // }
     // printf("###############\n");
-    if (!eliminate_count || !counter) {
-        return naked_triples(p_board);
-    }
 
     if (!eliminate_count) return 0;
     return counter;
