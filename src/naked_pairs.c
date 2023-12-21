@@ -1,5 +1,4 @@
 #include "naked_pairs.h"
-#include "naked_triples.h"
 
 bool is_naked_pairs(Cell *p_fixed_cell, Cell *p_check_cell) {
     if (p_check_cell->num_candidates != 2) return false;  // Pair of 2
@@ -35,11 +34,10 @@ void get_potential_naked_cells(Cell **p_cells, Cell *p_fixed_cell, Cell **potent
 
         potential_naked_cells[*potential_count] = p_cells[i];
         (*potential_count) += 1;
-
     }
 }
 
-void eliminate_candidates(Cell **p_cells, NakedPair pair, int *number_eliminate) {
+void eliminate_candidates_naked_pairs(Cell **p_cells, NakedPair pair, int *number_eliminate) {
     for (int i = 0; i < BOARD_SIZE; i++) {
         if (p_cells[i] == pair.p_cells[0]) continue;
         if (p_cells[i] == pair.p_cells[1]) continue;
@@ -56,10 +54,10 @@ void eliminate_candidates(Cell **p_cells, NakedPair pair, int *number_eliminate)
 
 int naked_pairs(SudokuBoard *p_board) {
     int counter = 0;
-    NakedPair pairs[BOARD_SIZE * BOARD_SIZE * 3];
+    NakedPair pairs[34992 + 12];  // max size: 3 * 9 * C(2, 9) * C(2, 9) = 3 * 9 * (9*8/2) * (9*8/2) = 34992
 
     int potential_count = 0;
-    Cell *potential_naked_cells[BOARD_SIZE * 3];
+    Cell *potential_naked_cells[BOARD_SIZE * 3 + 12];
     
     for (int i = 0; i < BOARD_SIZE; i++) {
         for (int j = 0; j < BOARD_SIZE; j++) {
@@ -83,11 +81,11 @@ int naked_pairs(SudokuBoard *p_board) {
         //                         pairs[i].p_cells[1]->row_index, pairs[i].p_cells[1]->col_index);
 
         if (pairs[i].p_cells[0]->row_index == pairs[i].p_cells[1]->row_index)
-            eliminate_candidates(p_board->p_rows[pairs[i].p_cells[0]->row_index], pairs[i], &eliminate_count);
+            eliminate_candidates_naked_pairs(p_board->p_rows[pairs[i].p_cells[0]->row_index], pairs[i], &eliminate_count);
         if (pairs[i].p_cells[0]->col_index == pairs[i].p_cells[1]->col_index)
-            eliminate_candidates(p_board->p_cols[pairs[i].p_cells[0]->col_index], pairs[i], &eliminate_count);
+            eliminate_candidates_naked_pairs(p_board->p_cols[pairs[i].p_cells[0]->col_index], pairs[i], &eliminate_count);
         if (pairs[i].p_cells[0]->box_index == pairs[i].p_cells[1]->box_index)
-            eliminate_candidates(p_board->p_boxes[pairs[i].p_cells[0]->box_index], pairs[i], &eliminate_count);
+            eliminate_candidates_naked_pairs(p_board->p_boxes[pairs[i].p_cells[0]->box_index], pairs[i], &eliminate_count);
 
         free(pairs[i].values);
     }
@@ -106,6 +104,6 @@ int naked_pairs(SudokuBoard *p_board) {
     // }
     // printf("###############\n");
 
-    if (!eliminate_count) return 0;
+    // if (!eliminate_count) return 0;
     return counter;
 }
