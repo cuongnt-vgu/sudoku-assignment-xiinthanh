@@ -3,7 +3,7 @@
 #include "sudoku.h"
 #include <stdio.h>
 
-typedef struct PairCells {
+typedef struct HiddenPair_impl {
     Cell *p_cells[2];
     int values[2];
 } HiddenPair;
