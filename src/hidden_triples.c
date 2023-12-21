@@ -1,6 +1,6 @@
 #include "hidden_triples.h"
 
-
+// has at least 2/3 candidate in triple values
 bool check_value_hidden_triple(Cell *p_cell, int x, int y, int z) {
     int count = 0;
     count += is_candidate(p_cell, x);
@@ -22,7 +22,7 @@ bool valid_hidden_triple(Cell **p_cells, HiddenTriple triple) {
         if (!have_value_candidate) return false;
     }
 
-    // check other cells in row (or col or box), they should have any value in triple values as a candidate
+    // check other cells in row (or col or box), they should not have any triple value as a candidate
     for (int i = 0; i < BOARD_SIZE; i++) {
         bool is_in_triple = false;
         for (int j = 0; j < 3; j++) {
@@ -39,7 +39,7 @@ bool valid_hidden_triple(Cell **p_cells, HiddenTriple triple) {
         }
     }
 
-    // check can eliminate candidates
+    // check if can eliminate candidates
     for (int cell_id = 0; cell_id < 3; cell_id++) {
         for (int value = 1; value <= BOARD_SIZE; value++) {
             bool is_triple_value = false;
@@ -53,7 +53,7 @@ bool valid_hidden_triple(Cell **p_cells, HiddenTriple triple) {
 
             if (is_candidate(triple.p_cells[cell_id], value)) {
                 // printf("%d %d, %d - eliminate\n", triple.p_cells[cell_id]->row_index, triple.p_cells[cell_id]->col_index, value);
-                return true;  // can eliminate value from triple.p_cells[cell_id]
+                return true;  // can eliminate 'value' from triple.p_cells[cell_id]
             }
         }
     }
@@ -86,7 +86,6 @@ void form_hidden_triple(Cell **p_cells, Cell *p_a, Cell *p_b, Cell *p_c, int x, 
     triples[*counter].values[2] = z;
 
     if (valid_hidden_triple(p_cells, triples[*counter]) && !is_in_hidden_triples_list(triples, *counter, p_a, p_b, p_c, x, y, z)) {
-        
         (*counter) += 1;
     }
 }
@@ -126,7 +125,6 @@ void eliminate_candidates_hidden_triples(HiddenTriple triple) {
 
 int hidden_triples(SudokuBoard *p_board)
 {
-
     int counter = 0;
     HiddenTriple triples[200000];  // <= C(3, 9) * 3 * 9 * C(3, 9) = 190512 (9rows + 9cols + 9boxes)
     for (int x = 1; x <= BOARD_SIZE - 2; x++) {
@@ -145,12 +143,6 @@ int hidden_triples(SudokuBoard *p_board)
 
     for (int i = 0; i < counter; i++) {
         eliminate_candidates_hidden_triples(triples[i]);
-        // printf("%d %d, %d %d, %d %d ", triples[i].p_cells[0]->row_index, triples[i].p_cells[0]->col_index,
-        //                                 triples[i].p_cells[1]->row_index, triples[i].p_cells[1]->col_index,
-        //                                 triples[i].p_cells[2]->row_index, triples[i].p_cells[2]->col_index);
-        // printf("- %d %d %d\n", triples[i].values[0], triples[i].values[1], triples[i].values[2]);
     }
-    // printf("|||%d|||\n", eliminate_count);
-    // printf("THIS IS NAKED TRIPLE\n");
     return counter;
 }

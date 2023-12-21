@@ -3,7 +3,7 @@
 #include "sudoku.h"
 #include <stdio.h>
 
-typedef struct HiidenTripleCells {
+typedef struct HiidenTriple_impl {
     Cell *p_cells[3];
     int values[3];
 } HiddenTriple;
